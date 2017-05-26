@@ -34,6 +34,11 @@ module.controller('KbnTableVisController', function ($scope, $element, Private) 
       const params = vis.params;
 
       $scope.inputSearch = "functest"
+      $scope.doSearch = function(){
+          console.log($scope.inputSearch)
+          console.log($("#inputSearch").val())
+          console.log($scope.tableGroups)
+      }
 
       tableGroups = tabifyAggResponse(vis, resp, {
         partialRows: params.showPartialRows,
@@ -51,7 +56,7 @@ module.controller('KbnTableVisController', function ($scope, $element, Private) 
 
     $scope.hasSomeRows = hasSomeRows;
     if (hasSomeRows) {
-
+      
       var newrows = []
 
       for (var i = 0; i < tableGroups.tables[0].rows.length; i++) {

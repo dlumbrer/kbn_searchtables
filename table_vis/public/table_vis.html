@@ -6,8 +6,8 @@
 
 
   <div ng-if="tableGroups" class="table-vis-container">
-    <input ng-model="inputSearch"></input>
-    search {{inputSearch}}
+    <input ng-model="inputSearch" id="inputSearch"></input>
+    <button ng-click="doSearch()">search {{inputSearch}}</button>
     <kbn-agg-table-group
       group="tableGroups"
       export-title="vis.title"
