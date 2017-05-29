@@ -22,7 +22,7 @@ rm -rf plugins/kbn_searchtables/
 
 # Example of use
 
-![Example](public/images/search_example.png)
+![Example](public/images/search_example.gif)
 
 ### Building a Release
 Building a release only means packaging the plugin with all its dependencies into a zip archive. Important is to put the plugin in a folder called kibana before zipping it.
