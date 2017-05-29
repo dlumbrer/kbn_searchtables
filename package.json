@@ -1,0 +1,12 @@
+{
+  "name": "kbn_searchtables",
+  "version": "kibana",
+  "authors": [
+  "David Moreno Lumbreras <dmorenolumb@gmail.com>"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dlumbrer/kbn_searchtables"
+  }
+}

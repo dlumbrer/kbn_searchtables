@@ -1,0 +1,20 @@
+<div ng-controller="KbnSearchTablesVisController" class="kbn-searchtables">
+  <div ng-if="!hasSomeRows && hasSomeRows !== null" class="kbn-searchtables-error">
+    <h2 aria-hidden="true"><i aria-hidden="true" class="fa fa-meh-o"></i></h2>
+    <h4>No results found</h4>
+  </div>
+
+
+  <div ng-if="tableGroups" class="kbn-searchtables-container">
+    <input ng-model="inputSearch" id="inputSearch"></input>
+    <button ng-click="doSearch()">search {{inputSearch}}</button>
+    <kbn-agg-table-group
+      group="tableGroups"
+      export-title="vis.title"
+      per-page="vis.params.perPage"
+      sort="sort"
+      show-total="vis.params.showTotal"
+      total-func="vis.params.totalFunc">
+    </kbn-agg-table-group>
+  </div>
+</div>
