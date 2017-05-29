@@ -2,7 +2,7 @@ import uiModules from 'ui/modules';
 import SearchTablesVisParamsTemplate from 'plugins/kbn_searchtables/kbn_searchtables_params.html';
 
 uiModules.get('kibana/kbn_searchtables')
-.directive('SearchTablesVisParams', function () {
+.directive('searchTablesVisParams', function () {
   return {
     restrict: 'E',
     template: SearchTablesVisParamsTemplate,
