@@ -24,6 +24,11 @@ module.controller('KbnTableVisController', function ($scope, $element, Private) 
    * - the underlying data changes (esResponse)
    * - one of the view options changes (vis.params)
    */
+
+   $scope.doSearch = function(){
+       $scope.inputSearch = $("#inputSearch").val();
+   }
+
   $scope.$watchMulti(['esResponse', 'vis.params', 'inputSearch'], function ([resp]) {
 
     let tableGroups = $scope.tableGroups = null;
@@ -33,11 +38,10 @@ module.controller('KbnTableVisController', function ($scope, $element, Private) 
       const vis = $scope.vis;
       const params = vis.params;
 
-      $scope.inputSearch = "functest"
-      $scope.doSearch = function(){
-          console.log($scope.inputSearch)
-          console.log($("#inputSearch").val())
-          console.log($scope.tableGroups)
+      if(!$("#inputSearch").val()){
+        $scope.inputSearch = "";
+      }else{
+        $scope.inputSearch = $("#inputSearch").val();
       }
 
       tableGroups = tabifyAggResponse(vis, resp, {
@@ -56,9 +60,9 @@ module.controller('KbnTableVisController', function ($scope, $element, Private) 
 
     $scope.hasSomeRows = hasSomeRows;
     if (hasSomeRows) {
-      
-      var newrows = []
 
+      //Logic to search
+      var newrows = []
       for (var i = 0; i < tableGroups.tables[0].rows.length; i++) {
         for (var j = 0; j < tableGroups.tables[0].rows[i].length; j++) {
           if(typeof tableGroups.tables[0].rows[i][j].key === 'string'){
@@ -70,7 +74,7 @@ module.controller('KbnTableVisController', function ($scope, $element, Private) 
         }
       }
       tableGroups.tables[0].rows = newrows;
-      console.log(newrows)
+      //////
       $scope.tableGroups = tableGroups;
     }
   });
