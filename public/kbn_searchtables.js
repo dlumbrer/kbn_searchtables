@@ -32,7 +32,7 @@ function SearchTablesVisTypeProvider(Private) {
   // return the visType object, which kibana will use to display and configure new
   // Vis object of this type.
   return new TemplateVisType({
-    name: 'table',
+    name: 'search-table',
     title: 'Data Table (Searchable)',
     image,
     description: 'Display values in a table and an input for search items without applying filters',
