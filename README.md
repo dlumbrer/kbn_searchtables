@@ -25,7 +25,7 @@ rm -rf plugins/kbn_searchtables/
 ![Example](public/images/search_example.gif)
 
 ### Building a Release
-Building a release only means packaging the plugin with all its dependencies into a zip archive. Important is to put the plugin in a folder called kibana before zipping it.
+Building a release only means packaging the plugin with all its dependencies into a zip archive.
 The following steps would produce a release of the current head master branch.
 ```
 mkdir release_searchtables
