@@ -1,4 +1,4 @@
-# Search-Tables for Kibana 5
+# Search-Tables for Kibana 5.4.X
 
 This is a plugin developed for Kibana 5 that you can build tables and search with an input **without applying filters**
 
@@ -10,7 +10,7 @@ cd KIBANA_HOME/plugins
 git clone https://github.com/dlumbrer/kbn_searchtables
 *Run your Kibana*
 ```
-> **Important:** If you have any problem with the plugin version (like a warning message "**it expected Kibana version "x.x.x", and found "5.0.0"**") only change the value of the "version" tag on the package.json to your Kibana version
+> **Important:** If you have any problem with the plugin version (like a warning message "**it expected Kibana version "5.4.·", and found "5.4.X"**") only change the value of the "version" tag on the package.json to your Kibana version
 
 
 #### Uninstall:
@@ -24,16 +24,6 @@ rm -rf plugins/kbn_searchtables/
 
 ![Example](public/images/search_example.gif)
 
-### Building a Release
-Building a release only means packaging the plugin with all its dependencies into a zip archive.
-The following steps would produce a release of the current head master branch.
-```
-mkdir release_searchtables
-cd release_searchtables
-git clone https://github.com/dlumbrer/kbn_searchtables
-cd ..
-zip -r kbn_searchtables-<version>.zip release_searchtables --exclude release_searchtables/kbn_searchtables/.git\*
-```
 
 ## Help me to improve! :smile:
 
