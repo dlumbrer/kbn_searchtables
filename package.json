@@ -1,6 +1,6 @@
 {
   "name": "kbn_searchtables",
-  "version": "kibana",
+  "version": "5.4.3",
   "authors": [
   "David Moreno Lumbreras <dmorenolumb@gmail.com>"
   ],
