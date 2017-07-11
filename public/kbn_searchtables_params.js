@@ -1,4 +1,4 @@
-import uiModules from 'ui/modules';
+import { uiModules } from 'ui/modules';
 import SearchTablesVisParamsTemplate from 'plugins/kbn_searchtables/kbn_searchtables_params.html';
 
 uiModules.get('kibana/kbn_searchtables')
