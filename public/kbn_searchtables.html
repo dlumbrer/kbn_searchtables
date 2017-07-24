@@ -6,8 +6,16 @@
 
 
   <div ng-if="tableGroups" class="kbn-searchtables-container">
-    <input ng-model="inputSearch" id="inputSearch"></input>
-    <button ng-click="doSearch()">search {{inputSearch}}</button>
+
+  	<div class="kuiLocalSearch"  id="inputSearchContainer">
+      <div class="kuiLocalSearchAssistedInput">
+        <input ng-model="inputSearch" ng-keyup="$event.keyCode == 13 && doSearch()" id="inputSearch" placeholder="Search..." class="kuiLocalSearchInput ng-touched" autocomplete="off" type="text">
+      </div>
+      <button ng-click="doSearch()" aria-label="Search" class="kuiLocalSearchButton" id="inputSearchButton">
+        <span aria-hidden="true" class="kuiIcon fa-search"></span>
+      </button>
+    </div>
+
     <kbn-agg-table-group
       group="tableGroups"
       export-title="vis.title"

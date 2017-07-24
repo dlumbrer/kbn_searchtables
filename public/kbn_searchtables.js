@@ -50,7 +50,7 @@ function SearchTablesVisTypeProvider(Private) {
         showTotal: false,
         totalFunc: 'sum'
       },
-      editor: '<kbn-searchtables-params></kbn-searchtables-params>'
+      editor: '<search-tables-vis-params></search-tables-vis-params>'
     },
     implementsRenderComplete: true,
     hierarchicalData: function (vis) {
@@ -61,6 +61,7 @@ function SearchTablesVisTypeProvider(Private) {
         group: 'metrics',
         name: 'metric',
         title: 'Metric',
+        aggFilter: '!geo_centroid',
         min: 1,
         defaults: [
           { type: 'count', schema: 'metric' }
