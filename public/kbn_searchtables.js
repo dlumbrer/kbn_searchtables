@@ -48,7 +48,8 @@ function SearchTablesVisTypeProvider(Private) {
           direction: null
         },
         showTotal: false,
-        totalFunc: 'sum'
+        totalFunc: 'sum',
+          caseSensitive: true
       },
       editor: '<search-tables-vis-params></search-tables-vis-params>'
     },

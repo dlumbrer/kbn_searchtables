@@ -30,7 +30,6 @@ module.controller('KbnSearchTablesVisController', function ($scope, $element, Pr
    }
 
   $scope.$watchMulti(['esResponse', 'vis.params', 'inputSearch'], function ([resp]) {
-
     let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
 
@@ -60,11 +59,18 @@ module.controller('KbnSearchTablesVisController', function ($scope, $element, Pr
     if (hasSomeRows) {
 
       //Logic to search
+        let searchTerm = $scope.inputSearch;
+        let caseSensitive = $scope.vis.params.caseSensitive;
       var newrows = []
       for (var i = 0; i < tableGroups.tables[0].rows.length; i++) {
         for (var j = 0; j < tableGroups.tables[0].rows[i].length; j++) {
           if(typeof tableGroups.tables[0].rows[i][j].key === 'string'){
-            if(tableGroups.tables[0].rows[i][j].key.includes($scope.inputSearch)){
+              let key = tableGroups.tables[0].rows[i][j].key;
+              if (!caseSensitive) {
+                  key = key.toLowerCase();
+                  searchTerm = searchTerm.toLowerCase();
+              }
+              if(key.includes(searchTerm)){
               newrows.push(tableGroups.tables[0].rows[i])
               break;
             }
