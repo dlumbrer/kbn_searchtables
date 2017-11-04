@@ -7,18 +7,18 @@
 
   <div ng-if="tableGroups" class="kbn-searchtables-container">
 
-    <div ng-hide="showInput" class="width: 100%;" align="right">
+    <div ng-hide="showInput || !vis.params.inputSearchHideable" class="width: 100%;" align="right">
       <a ng-click="showInput = true" class="textSearch">Search</a>
     </div>
 
-  	<div class="kuiLocalSearch"  class="inputSearchContainer" ng-show="showInput">
+  	<div class="kuiLocalSearch" class="inputSearchContainer" ng-show="showInput || !vis.params.inputSearchHideable" style="width:{{vis.params.inputSearchWidth}}">
       <div class="kuiLocalSearchAssistedInput" style="width:100%">
         <input ng-model="inputSearch" ng-keyup="$event.keyCode == 13 && doSearch($id)" id="inputSearch_{{$id}}" placeholder="Search..." class="kuiLocalSearchInput ng-touched inputSearch" autocomplete="off" type="text">
       </div>
       <button ng-click="doSearch($id)" aria-label="Search" class="kuiLocalSearchButton inputSearchButton">
         <span aria-hidden="true" class="kuiIcon fa-search"></span>
       </button>
-      <button ng-click="showInput = false" class="kuiLocalSearchButton cancelSearchButton">
+      <button ng-click="showInput = false" ng-show="vis.params.inputSearchHideable" class="kuiLocalSearchButton cancelSearchButton">
         <span aria-hidden="true" class="kuiIcon kuiButton--danger fa-times"></span>
       </button>
     </div>
