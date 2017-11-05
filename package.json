@@ -1,6 +1,6 @@
 {
   "name": "kbn_searchtables",
-  "version": "5.5.0-1",
+  "version": "5.5.0-4",
   "kibana": {
     "version": "5.5.0"
   },
