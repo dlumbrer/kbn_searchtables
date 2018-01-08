@@ -3,10 +3,10 @@ import 'plugins/kbn_searchtables/kbn_searchtables_controller';
 import 'plugins/kbn_searchtables/kbn_searchtables_params';
 import 'ui/agg_table';
 import 'ui/agg_table/agg_table_group';
-import { VisVisTypeProvider } from 'ui/vis/vis_type';
-import { TemplateVisTypeProvider } from 'ui/template_vis_type/template_vis_type';
-import { VisSchemasProvider } from 'ui/vis/schemas';
-import SearchTablesVisTemplate from 'plugins/kbn_searchtables/kbn_searchtables.html';
+import { VisFactoryProvider } from 'ui/vis/vis_factory';
+import { CATEGORY } from 'ui/vis/vis_category';
+import { VisSchemasProvider } from 'ui/vis/editors/default/schemas';
+import searchtableVisTemplate from 'plugins/kbn_searchtables/kbn_searchtables.html';
 import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
 import image from './images/icon-table.svg';
 // we need to load the css ourselves
@@ -18,27 +18,26 @@ import image from './images/icon-table.svg';
 // require the directives that we use as well
 
 // register the provider with the visTypes registry
-VisTypesRegistryProvider.register(SearchTablesVisTypeProvider);
+VisTypesRegistryProvider.register(TableVisTypeProvider);
 
-// define the SearchTablesVisType
-function SearchTablesVisTypeProvider(Private) {
-  const VisType = Private(VisVisTypeProvider);
-  const TemplateVisType = Private(TemplateVisTypeProvider);
+// define the TableVisType
+function TableVisTypeProvider(Private) {
+  const VisFactory = Private(VisFactoryProvider);
   const Schemas = Private(VisSchemasProvider);
 
-  // define the SearchTablesVisController which is used in the template
+  // define the TableVisController which is used in the template
   // by angular's ng-controller directive
 
   // return the visType object, which kibana will use to display and configure new
   // Vis object of this type.
-  return new TemplateVisType({
-    name: 'search-table',
-    title: 'Data Table (Searchable)',
+  return VisFactory.createAngularVisualization({
+    type: 'table',
+    name: 'table',
+    title: 'Searchtables',
     image,
     description: 'Display values in a table and an input for search items without applying filters',
-    category: VisType.CATEGORY.DATA,
-    template: SearchTablesVisTemplate,
-    params: {
+    category: CATEGORY.DATA,
+    visConfig: {
       defaults: {
         perPage: 10,
         showPartialRows: false,
@@ -48,38 +47,44 @@ function SearchTablesVisTypeProvider(Private) {
           direction: null
         },
         showTotal: false,
-        totalFunc: 'sum',
-        caseSensitive: true
+        totalFunc: 'sum'
       },
-      editor: '<search-tables-vis-params></search-tables-vis-params>'
+      template: searchtableVisTemplate,
     },
-    implementsRenderComplete: true,
+    editorConfig: {
+      optionsTemplate: '<search-table-vis-params></search-table-vis-params>',
+      schemas: new Schemas([
+        {
+          group: 'metrics',
+          name: 'metric',
+          title: 'Metric',
+          aggFilter: ['!geo_centroid', '!geo_bounds'],
+          min: 1,
+          defaults: [
+            { type: 'count', schema: 'metric' }
+          ]
+        },
+        {
+          group: 'buckets',
+          name: 'bucket',
+          title: 'Split Rows',
+          aggFilter: ['!filter']
+        },
+        {
+          group: 'buckets',
+          name: 'split',
+          title: 'Split Table',
+          aggFilter: ['!filter']
+        }
+      ])
+    },
+    responseHandlerConfig: {
+      asAggConfigResults: true
+    },
     hierarchicalData: function (vis) {
       return Boolean(vis.params.showPartialRows || vis.params.showMeticsAtAllLevels);
-    },
-    schemas: new Schemas([
-      {
-        group: 'metrics',
-        name: 'metric',
-        title: 'Metric',
-        aggFilter: '!geo_centroid',
-        min: 1,
-        defaults: [
-          { type: 'count', schema: 'metric' }
-        ]
-      },
-      {
-        group: 'buckets',
-        name: 'bucket',
-        title: 'Split Rows'
-      },
-      {
-        group: 'buckets',
-        name: 'split',
-        title: 'Split Table'
-      }
-    ])
+    }
   });
 }
 
-export default SearchTablesVisTypeProvider;
+export default TableVisTypeProvider;

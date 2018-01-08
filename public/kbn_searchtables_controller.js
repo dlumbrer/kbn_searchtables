@@ -1,4 +1,3 @@
-import { AggResponseTabifyProvider } from 'ui/agg_response/tabify/tabify';
 import { uiModules } from 'ui/modules';
 import { assign } from 'lodash';
 
@@ -8,9 +7,7 @@ const module = uiModules.get('kibana/kbn_searchtables', ['kibana']);
 
 // add a controller to tha module, which will transform the esResponse into a
 // tabular format that we can pass to the table directive
-module.controller('KbnSearchTablesVisController', function ($scope, $element, Private) {
-  const tabifyAggResponse = Private(AggResponseTabifyProvider);
-
+module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
   const uiStateSort = ($scope.uiState) ? $scope.uiState.get('vis.params.sort') : {};
   assign($scope.vis.params.sort, uiStateSort);
 
@@ -19,58 +16,35 @@ module.controller('KbnSearchTablesVisController', function ($scope, $element, Pr
     $scope.uiState.set('vis.params.sort', newSort);
   });
 
+   $scope.doSearch = function(id){
+       $scope.inputSearch = $("#inputSearch_" + id).val();
+   }
+
   /**
    * Recreate the entire table when:
    * - the underlying data changes (esResponse)
    * - one of the view options changes (vis.params)
    */
-
-   $scope.doSearch = function(id){
-       $scope.inputSearch = $("#inputSearch_" + id).val();
-   }
-
-  $scope.$watchMulti(['esResponse', 'vis.params', 'inputSearch'], function ([resp]) {
+  $scope.$watchMulti(['esResponse', 'inputSearch'], function (resp) {
+    //VERY IMPORTANT IN ORDER TO RE-RENDER THE TABLE
+    $scope.renderAgain = false;
+    ////////////////////////////////////////////
     let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
 
     if (resp) {
-      const vis = $scope.vis;
-      const params = vis.params;
-
+    //IMPORTANT COPY THE OBJECT
+    tableGroups = angular.copy(resp[0])
+    //////////////////////////
       if(!$scope.inputSearch){
         $scope.inputSearch = "";
       }
-
-      tableGroups = tabifyAggResponse(vis, resp, {
-        partialRows: params.showPartialRows,
-        minimalColumns: vis.isHierarchical() && !params.showMeticsAtAllLevels,
-        asAggConfigResults: true
-      });
-
-      hasSomeRows = tableGroups.tables.some(function haveRows(table) {
-        if (table.tables) return table.tables.some(haveRows);
-        return table.rows.length > 0;
-      });
-
-      $element.trigger('renderComplete');
-    }
-
-    $scope.hasSomeRows = hasSomeRows;
-    if (hasSomeRows) {
-
       //Logic to search
-      let searchTerm = $scope.inputSearch;
-      let caseSensitive = $scope.vis.params.caseSensitive;
       var newrows = []
       for (var i = 0; i < tableGroups.tables[0].rows.length; i++) {
         for (var j = 0; j < tableGroups.tables[0].rows[i].length; j++) {
           if(typeof tableGroups.tables[0].rows[i][j].key === 'string'){
-            let key = tableGroups.tables[0].rows[i][j].key;
-            if (!caseSensitive) {
-                key = key.toLowerCase();
-                searchTerm = searchTerm.toLowerCase();
-            }
-            if(key.includes(searchTerm)){
+            if(tableGroups.tables[0].rows[i][j].key.includes($scope.inputSearch)){
               newrows.push(tableGroups.tables[0].rows[i])
               break;
             }
@@ -78,8 +52,23 @@ module.controller('KbnSearchTablesVisController', function ($scope, $element, Pr
         }
       }
       tableGroups.tables[0].rows = newrows;
-      //////
+      /////
+
+      hasSomeRows = tableGroups.tables.some(function haveRows(table) {
+        if (table.tables) return table.tables.some(haveRows);
+        return table.rows.length > 0;
+      });
+
+      $scope.renderComplete();
+    }
+
+    $scope.hasSomeRows = hasSomeRows;
+    if (hasSomeRows) {
       $scope.tableGroups = tableGroups;
+      $timeout(function() {
+        $scope.$apply();
+        $scope.renderAgain = true;
+      })
     }
   });
 });
