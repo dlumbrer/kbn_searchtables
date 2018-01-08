@@ -2,21 +2,26 @@
 
 This is a plugin developed for Kibana 5 that you can build tables and search with an input **without applying filters**
 
-## First, download the release according your Kibana's version
+## Installation Steps from release
 
-Now this plugin is avalible for differents versions of Kibana, in [releases](https://github.com/dlumbrer/kbn_searchtables/releases "Go to releases!") you can find the source code, ZIPs and TARs of the plugin to use in:
-* [Kibana 5.5.x](https://github.com/dlumbrer/kbn_searchtables/releases/tag/5.5.X-3 "Go to source")
-* [Kibana 5.4.x](https://github.com/dlumbrer/kbn_searchtables/releases/tag/5.4.X-3.1 "Go to source")
+Now this plugin is avalible for differents versions of Kibana (6, 5 and 4), in [releases](https://github.com/dlumbrer/kbn_searchtables/releases "Go to releases!") you can download the plugin with all its dependencies installed:
 
-## Installation Steps
+1. Go to [releases](https://github.com/dlumbrer/kbn_searchtables/releases "Go to releases!") and download the right one for your Kibana
+2. unzip/untar it into `KIBANA_HOME/plugins`
+3. Start your Kibana
 
-```
-cd KIBANA_HOME/plugins
-git clone https://github.com/dlumbrer/kbn_searchtables
-rm kbn_searchtables/public/images/search_example.gif
-*Run your Kibana*
-```
-> **Important:** If you have any problem with the plugin version (like a warning message "**it expected Kibana version "x.x.x", and found "5.0.0"**") only change the value of the "version" tag on the package.json to your Kibana version
+
+## Installation Steps from GitHub source code
+
+1. Move into plugins folder:  `cd KIBANA_HOME/plugins`
+2. Clone the source code (**it depends on your Kibana's version**):
+    - Kibana 6: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 6-dev`
+    - Kibana 5.5.X or 5.6.X: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 5.5.x`
+    - Kibana 5.5.X or lower: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 5.4.x`
+
+3. Start Kibana
+
+> **Important:** If you have any problem with the plugin version (like a warning message "**it expected Kibana version "x.x.x", and found "x.x.x"**") only change the value of the "version" tag on the package.json to your Kibana version
 
 
 #### Uninstall:
