@@ -1,4 +1,4 @@
-# Search-Tables for Kibana 5.5.X
+# Search-Tables for Kibana 5 & 6
 
 This is a plugin developed for Kibana 5 that you can build tables and search with an input **without applying filters**
 
