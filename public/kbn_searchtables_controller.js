@@ -33,24 +33,28 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
     let hasSomeRows = $scope.hasSomeRows = null;
 
     if (resp) {
-    //IMPORTANT COPY THE OBJECT
-    tableGroups = angular.copy(resp[0])
-    //////////////////////////
+      //IMPORTANT COPY THE OBJECT
+      tableGroups = angular.extend(resp[0])
+      if(!tableGroups.tables[0].rows_default){
+        tableGroups.tables[0].rows_default = tableGroups.tables[0].rows;
+      }
+      //////////////////////////
       if(!$scope.inputSearch){
         $scope.inputSearch = "";
       }
       //Logic to search
       var newrows = []
-      for (var i = 0; i < tableGroups.tables[0].rows.length; i++) {
-        for (var j = 0; j < tableGroups.tables[0].rows[i].length; j++) {
-          if(typeof tableGroups.tables[0].rows[i][j].key === 'string'){
-            if(tableGroups.tables[0].rows[i][j].key.includes($scope.inputSearch)){
-              newrows.push(tableGroups.tables[0].rows[i])
+      for (var i = 0; i < tableGroups.tables[0].rows_default.length; i++) {
+        for (var j = 0; j < tableGroups.tables[0].rows_default[i].length; j++) {
+          if(typeof tableGroups.tables[0].rows_default[i][j].key === 'string'){
+            if(tableGroups.tables[0].rows_default[i][j].key.includes($scope.inputSearch)){
+              newrows.push(tableGroups.tables[0].rows_default[i])
               break;
             }
           }
         }
       }
+
       tableGroups.tables[0].rows = newrows;
       /////
 
