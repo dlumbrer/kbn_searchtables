@@ -1,7 +1,9 @@
 <div ng-controller="KbnSearchTablesVisController" class="kbn-searchtables">
-  <div ng-if="!hasSomeRows && hasSomeRows !== null" class="kbn-searchtables-error">
+  <div ng-if="!hasSomeRows && hasSomeRows !== null" class="table-vis-error">
     <h2 aria-hidden="true"><i aria-hidden="true" class="fa fa-meh-o"></i></h2>
-    <h4>No results found</h4>
+    <h4>No results found <br>
+      <a ng-click="doSearch($id)">Reset Search</a>
+    </h4>
   </div>
 
 
