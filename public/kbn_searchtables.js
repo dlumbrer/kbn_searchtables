@@ -31,8 +31,8 @@ function TableVisTypeProvider(Private) {
   // return the visType object, which kibana will use to display and configure new
   // Vis object of this type.
   return VisFactory.createAngularVisualization({
-    type: 'table',
-    name: 'table',
+    type: 'searchtables',
+    name: 'searchtables',
     title: 'Searchtables',
     image,
     description: 'Display values in a table and an input for search items without applying filters',
