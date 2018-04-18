@@ -35,6 +35,11 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
     if (resp) {
       //IMPORTANT COPY THE OBJECT
       tableGroups = angular.extend(resp[0])
+      // Check if exist
+      if(tableGroups.tables.length == 0){
+        $scope.hasSomeRows = false;
+        return
+      }
       if(!tableGroups.tables[0].rows_default){
         tableGroups.tables[0].rows_default = tableGroups.tables[0].rows;
       }
