@@ -15,7 +15,8 @@ Now this plugin is avalible for differents versions of Kibana (6, 5 and 4), in [
 
 1. Move into plugins folder:  `cd KIBANA_HOME/plugins`
 2. Clone the source code (**it depends on your Kibana's version**):
-    - Kibana 6: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 6-dev`
+    - Kibana 6.3 or upper: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 6-dev`
+    - Kibana 6.0, 6.1 or 6.2: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 6.2-dev`
     - Kibana 5.5.X or 5.6.X: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 5.5.x`
     - Kibana 5.5.X or lower: `git clone https://github.com/dlumbrer/kbn_searchtables.git -b 5.4.x`
 
