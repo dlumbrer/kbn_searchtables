@@ -26,6 +26,7 @@
     "babel-eslint": "4.1.8",
     "chai": "^3.5.0",
     "eslint": "1.10.3",
-    "eslint-plugin-mocha": "1.1.0"
+    "eslint-plugin-mocha": "1.1.0",
+    "lodash": "^4.17.5"
   }
 }

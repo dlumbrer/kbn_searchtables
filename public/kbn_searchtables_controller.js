@@ -1,5 +1,6 @@
 import { uiModules } from 'ui/modules';
-import { assign } from 'lodash';
+import { assign, cloneDeep } from 'lodash';
+
 
 // get the kibana/kbn_searchtables module, and make sure that it requires the "kibana" module if it
 // didn't already
@@ -16,44 +17,52 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
     $scope.uiState.set('vis.params.sort', newSort);
   });
 
-   $scope.doSearch = function(id){
-       $scope.inputSearch = $("#inputSearch_" + id).val();
-   }
+  $scope.doSearch = function (id) {
+    $scope.inputSearch = $("#inputSearch_" + id).val();
+  }
 
   /**
    * Recreate the entire table when:
    * - the underlying data changes (esResponse)
    * - one of the view options changes (vis.params)
    */
-  $scope.$watchMulti(['esResponse', 'inputSearch'], function (resp) {
+  $scope.$watchMulti(['esResponse', 'inputSearch'], function ([esResponse, inputSearch]) {
     //VERY IMPORTANT IN ORDER TO RE-RENDER THE TABLE
     $scope.renderAgain = false;
     ////////////////////////////////////////////
     let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
 
-    if (resp) {
+    if (esResponse) {
       //IMPORTANT COPY THE OBJECT
-      tableGroups = angular.extend(resp[0])
+      tableGroups = angular.extend(esResponse);
+
       // Check if exist
-      if(tableGroups.tables.length == 0){
+      if (tableGroups.tables.length === 0) {
         $scope.hasSomeRows = false;
-        return
+        return;
       }
-      if(!tableGroups.tables[0].rows_default){
+
+      if (!tableGroups.tables[0].rows_default) {
         tableGroups.tables[0].rows_default = tableGroups.tables[0].rows;
       }
       //////////////////////////
-      if(!$scope.inputSearch){
-        $scope.inputSearch = "";
+      if (!$scope.inputSearch) {
+        $scope.inputSearch = '';
       }
       //Logic to search
-      var newrows = []
+      var newrows = [];
       for (var i = 0; i < tableGroups.tables[0].rows_default.length; i++) {
         for (var j = 0; j < tableGroups.tables[0].rows_default[i].length; j++) {
-          if(typeof tableGroups.tables[0].rows_default[i][j].key === 'string'){
-            if(tableGroups.tables[0].rows_default[i][j].key.includes($scope.inputSearch)){
-              newrows.push(tableGroups.tables[0].rows_default[i])
+          const rowKey = tableGroups.tables[0].rows_default[i][j].key;
+
+          // Polyfill for lodash@v4.x
+          // @see https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11972
+          const isRowKeyNil = rowKey == null;
+          if (!isRowKeyNil) {
+            const rowKeyStr = `${rowKey}`.toLowerCase();
+            if (rowKeyStr.includes($scope.inputSearch.toLowerCase())) {
+              newrows.push(tableGroups.tables[0].rows_default[i]);
               break;
             }
           }
@@ -74,10 +83,10 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
     $scope.hasSomeRows = hasSomeRows;
     if (hasSomeRows) {
       $scope.tableGroups = tableGroups;
-      $timeout(function() {
+      $timeout(function () {
         $scope.$apply();
         $scope.renderAgain = true;
-      })
+      });
     }
   });
 });
