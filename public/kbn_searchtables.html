@@ -14,8 +14,8 @@
           <li>
             <div class="kuiLocalSearch" class="inputSearchContainer">
               <div class="kuiLocalSearchAssistedInput" style="width:100%">
-                <input ng-model="inputSearch"
-                  ng-keyup="$event.keyCode == 13 && doSearch($id)"
+                <input ng-model="config.searchKeyword"
+                  ng-keyup="$event.keyCode == 13 && doSearch()"
                   id="inputSearch_{{$id}}"
                   placeholder="Search..."
                   class="kuiLocalSearchInput ng-touched inputSearch"

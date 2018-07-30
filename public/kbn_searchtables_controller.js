@@ -1,5 +1,5 @@
 import { uiModules } from 'ui/modules';
-import { assign, cloneDeep } from 'lodash';
+import { assign } from 'lodash';
 
 
 // get the kibana/kbn_searchtables module, and make sure that it requires the "kibana" module if it
@@ -12,21 +12,26 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
   const uiStateSort = ($scope.uiState) ? $scope.uiState.get('vis.params.sort') : {};
   assign($scope.vis.params.sort, uiStateSort);
 
+  const defaultConfig = {
+    searchKeyword: ''
+  };
+  $scope.config = ($scope.uiState) ? $scope.uiState.get('vis.params.config') || defaultConfig : defaultConfig;
+
   $scope.sort = $scope.vis.params.sort;
   $scope.$watchCollection('sort', function (newSort) {
     $scope.uiState.set('vis.params.sort', newSort);
   });
 
   $scope.doSearch = function (id) {
-    $scope.inputSearch = $("#inputSearch_" + id).val();
-  }
+    $scope.inputSearch = $scope.config.searchKeyword;
+  };
 
   /**
    * Recreate the entire table when:
    * - the underlying data changes (esResponse)
    * - one of the view options changes (vis.params)
    */
-  $scope.$watchMulti(['esResponse', 'inputSearch'], function ([esResponse, inputSearch]) {
+  $scope.$watchMulti(['esResponse', 'config.searchKeyword'], function ([esResponse, inputSearch]) {
     //VERY IMPORTANT IN ORDER TO RE-RENDER THE TABLE
     $scope.renderAgain = false;
     ////////////////////////////////////////////
@@ -47,8 +52,8 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
         tableGroups.tables[0].rows_default = tableGroups.tables[0].rows;
       }
       //////////////////////////
-      if (!$scope.inputSearch) {
-        $scope.inputSearch = '';
+      if (!inputSearch) {
+        $scope.config.searchKeyword = inputSearch = '';
       }
       //Logic to search
       var newrows = [];
@@ -61,7 +66,7 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
           const isRowKeyNil = rowKey == null;
           if (!isRowKeyNil) {
             const rowKeyStr = `${rowKey}`.toLowerCase();
-            if (rowKeyStr.includes($scope.inputSearch.toLowerCase())) {
+            if (rowKeyStr.includes(inputSearch.toLowerCase())) {
               newrows.push(tableGroups.tables[0].rows_default[i]);
               break;
             }
@@ -89,4 +94,8 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
       });
     }
   });
+
+  $scope.$watch('config', function () {
+    $scope.uiState.set('vis.params.config', $scope.config);
+  }, true);
 });
