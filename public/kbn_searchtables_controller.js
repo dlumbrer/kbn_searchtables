@@ -22,8 +22,8 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
     $scope.uiState.set('vis.params.sort', newSort);
   });
 
-  $scope.doSearch = function (id) {
-    $scope.inputSearch = $scope.config.searchKeyword;
+  $scope.resetSearch = function () {
+    $scope.config.searchKeyword = '';
   };
 
   /**

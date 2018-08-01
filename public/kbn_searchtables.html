@@ -1,13 +1,5 @@
 <div ng-controller="KbnSearchTablesVisController" class="kbn-searchtables">
-  <div ng-if="!hasSomeRows && hasSomeRows !== null" class="table-vis-error">
-    <h2 aria-hidden="true"><i aria-hidden="true" class="fa fa-meh-o"></i></h2>
-    <h4>No results found <br>
-      <a ng-click="doSearch($id)">Reset Search</a>
-    </h4>
-  </div>
-
-
-  <div ng-if="tableGroups" class="kbn-searchtables-container">
+  <div class="kbn-searchtables-container">
     <div class="navbar navbar-default subnav">
       <div class="container-fluid">
         <ul class="nav navbar-nav">
@@ -15,14 +7,14 @@
             <div class="kuiLocalSearch" class="inputSearchContainer">
               <div class="kuiLocalSearchAssistedInput" style="width:100%">
                 <input ng-model="config.searchKeyword"
-                  ng-keyup="$event.keyCode == 13 && doSearch()"
+                  ng-keyup="$event.keyCode == 13"
                   id="inputSearch_{{$id}}"
                   placeholder="Search..."
                   class="kuiLocalSearchInput ng-touched inputSearch"
                   autocomplete="off"
                   type="text">
               </div>
-              <button ng-click="doSearch($id)" aria-label="Search" class="kuiButton kuiButton--primary inputSearchButton">
+              <button aria-label="Search" class="kuiButton kuiButton--primary inputSearchButton">
                 <span aria-hidden="true" class="kuiIcon fa-search"></span>
               </button>
             </div>
@@ -37,7 +29,14 @@
       sort="sort"
       show-total="vis.params.showTotal"
       total-func="vis.params.totalFunc"
-      ng-if="renderAgain">
+      ng-if="renderAgain && tableGroups">
     </kbn-agg-table-group>
+    <div ng-if="!hasSomeRows && hasSomeRows !== null" class="table-vis-error">
+      <div class="euiSpacer euiSpacer--l"></div>
+      <h2 aria-hidden="true"><i aria-hidden="true" class="fa fa-meh-o"></i></h2>
+      <h4>No results found <br>
+        <a ng-click="resetSearch()">Reset Search</a>
+      </h4>
+    </div>
   </div>
 </div>
