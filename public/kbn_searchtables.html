@@ -1,6 +1,9 @@
 <div ng-controller="KbnSearchTablesVisController" class="kbn-searchtables">
   <div class="kbn-searchtables-container">
-    <div class="navbar navbar-default subnav">
+    <div ng-hide="showInput" class="width: 100%;" align="right" class="textSearch">
+      <a ng-click="showInput = true">Search</a>
+    </div>
+    <div class="navbar navbar-default subnav" ng-show="showInput">
       <div class="container-fluid">
         <ul class="nav navbar-nav">
           <li>
@@ -16,6 +19,9 @@
               </div>
               <button aria-label="Search" class="kuiButton kuiButton--primary inputSearchButton">
                 <span aria-hidden="true" class="kuiIcon fa-search"></span>
+              </button>
+              <button aria-label="Close Search" ng-click="showInput = false" class="kuiButton kuiButton--warning inputSearchButton">
+                <span aria-hidden="true" class="kuiIcon fa-times"></span>
               </button>
             </div>
           </li>
