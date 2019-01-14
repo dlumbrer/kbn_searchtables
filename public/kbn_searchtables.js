@@ -73,6 +73,7 @@ function TableVisTypeProvider(Private) {
           group: 'buckets',
           name: 'split',
           title: 'Split Table',
+          max: 1,
           aggFilter: ['!filter']
         }
       ])
