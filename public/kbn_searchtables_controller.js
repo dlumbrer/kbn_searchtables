@@ -47,34 +47,46 @@ module.controller('KbnSearchTablesVisController', function ($timeout, $scope) {
         $scope.hasSomeRows = false;
         return;
       }
-
-      if (!tableGroups.tables[0].rows_default) {
-        tableGroups.tables[0].rows_default = tableGroups.tables[0].rows;
-      }
       //////////////////////////
       if (!inputSearch) {
         $scope.config.searchKeyword = inputSearch = '';
       }
-      //Logic to search
-      var newrows = [];
-      for (var i = 0; i < tableGroups.tables[0].rows_default.length; i++) {
-        for (var j = 0; j < tableGroups.tables[0].rows_default[i].length; j++) {
-          const rowKey = tableGroups.tables[0].rows_default[i][j].key;
 
-          // Polyfill for lodash@v4.x
-          // @see https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11972
-          const isRowKeyNil = rowKey == null;
-          if (!isRowKeyNil) {
-            const rowKeyStr = `${rowKey}`.toLowerCase();
-            if (rowKeyStr.includes(inputSearch.toLowerCase())) {
-              newrows.push(tableGroups.tables[0].rows_default[i]);
-              break;
+      //Logic to search
+      for (var k = 0; k < tableGroups.tables.length; k++) {
+        var newrows = [];
+
+        //IMPORTANT: This just allows one level of split table
+        let tableRows;
+        if (tableGroups.tables[k].rows) {
+          tableRows = tableGroups.tables[k]
+        } else {
+          tableRows = tableGroups.tables[k].tables[0]
+        }
+
+        //Copy property in order to dont lose the first search
+        if (!tableRows.rows_default) {
+          tableRows.rows_default = tableRows.rows;
+        }
+
+        for (var i = 0; i < tableRows.rows_default.length; i++) {
+          for (var j = 0; j < tableRows.rows_default[i].length; j++) {
+            const rowKey = tableRows.rows_default[i][j].key;
+
+            // Polyfill for lodash@v4.x
+            // @see https://github.com/lodash/lodash/blob/4.17.10/lodash.js#L11972
+            const isRowKeyNil = rowKey == null;
+            if (!isRowKeyNil) {
+              const rowKeyStr = `${rowKey}`.toLowerCase();
+              if (rowKeyStr.includes(inputSearch.toLowerCase())) {
+                newrows.push(tableRows.rows_default[i]);
+                break;
+              }
             }
           }
         }
+        tableRows.rows = newrows;
       }
-
-      tableGroups.tables[0].rows = newrows;
       /////
 
       hasSomeRows = tableGroups.tables.some(function haveRows(table) {
