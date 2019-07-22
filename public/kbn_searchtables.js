@@ -49,7 +49,9 @@ function SearchTablesVisTypeProvider(Private) {
         },
         showTotal: false,
         totalFunc: 'sum',
-        caseSensitive: true
+        caseSensitive: true,
+        inputSearchHideable: true,
+        inputSearchWidth: '100%'
       },
       editor: '<search-tables-vis-params></search-tables-vis-params>'
     },
